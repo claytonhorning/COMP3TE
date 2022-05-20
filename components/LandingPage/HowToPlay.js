@@ -1,7 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "../../styles/LandingPage/HowToPlay.module.css";
+import SignUp from "../Auth/SignUp";
+import Link from "next/link";
+import { SignUpModalContext } from "../../context/SignUpModalContext";
+import { useAuth } from "../../context/AuthContext";
 
 export default function HowToPlay() {
+  const [signUpOpen, setSignUpOpen] = useState(false);
+  const { currentUser } = useAuth();
+
   return (
     <div className={styles.howToPlaySection}>
       <div className={styles.numbers}>
@@ -19,11 +26,14 @@ export default function HowToPlay() {
       </div>
       <div className={styles.content}>
         <DetailRow
-          title={"Sign up"}
+          title={currentUser ? "Sign up ✅" : "Sign up"}
           description={
             "Sign up for an account - all we require is your name and email."
           }
           btnTitle={"Sign up"}
+          onClick={() => {
+            setSignUpOpen(true);
+          }}
         />
         <DetailRow
           title={"Assemble your team"}
@@ -40,11 +50,14 @@ export default function HowToPlay() {
           btnTitle={"Set reminder"}
         />
       </div>
+      <SignUpModalContext.Provider value={{ signUpOpen, setSignUpOpen }}>
+        <SignUp open={signUpOpen} />
+      </SignUpModalContext.Provider>
     </div>
   );
 }
 
-function DetailRow({ title, description, btnTitle }) {
+function DetailRow({ title, description, btnTitle, onClick }) {
   return (
     <div className={styles.row}>
       <div className={styles.col}>
@@ -52,7 +65,9 @@ function DetailRow({ title, description, btnTitle }) {
         <p className={styles.paragraph}>{description}</p>
       </div>
       <div className={styles.col}>
-        <button className={styles.btn}>{btnTitle}</button>
+        <button onClick={onClick} className={styles.btn}>
+          {btnTitle}
+        </button>
       </div>
     </div>
   );
