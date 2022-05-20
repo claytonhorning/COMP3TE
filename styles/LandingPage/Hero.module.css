@@ -1,0 +1,37 @@
+.heroContainer {
+  background: linear-gradient(
+    90deg,
+    rgba(2, 0, 36, 1) 0%,
+    rgba(9, 9, 121, 1) 35%,
+    rgb(137, 31, 223) 100%
+  );
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.heroSection {
+  margin: 10em 2em;
+  width: 900px;
+}
+.heroHeader {
+  color: white;
+  font-size: 5em;
+  font-weight: 600;
+  text-align: center;
+}
+.heroSubheader {
+  color: white;
+  font-size: 1.2em;
+  text-align: center;
+  padding-top: 3em;
+  margin: 0 3em;
+}
+
+@media only screen and (max-width: 600px) {
+  .heroHeader {
+    font-size: 3em;
+  }
+  .heroSubheader {
+    margin: 0;
+  }
+}

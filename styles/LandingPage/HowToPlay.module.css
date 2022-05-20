@@ -1,0 +1,71 @@
+.howToPlaySection {
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  margin: 4em 4em;
+}
+.numbers {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+.numberCircle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50px;
+  width: 50px;
+  border: 2px solid #5897ed;
+  border-radius: 25px;
+  color: #5897ed;
+  font-weight: 500;
+}
+.dashedLine {
+  margin: 10px 0;
+  height: 75px;
+  width: 0px;
+  border: 1px dashed #5897ed;
+}
+.content {
+  margin-left: 2em;
+}
+.header {
+  color: #5897ed;
+  font-size: 1.3em;
+  font-weight: 600;
+  margin-top: 10px;
+}
+.paragraph {
+  margin-top: 10px;
+  opacity: 0.7;
+  width: 325px;
+}
+.row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 44px;
+}
+.col {
+  display: flex;
+  flex-direction: column;
+}
+.btn {
+  height: 50px;
+  padding: 10px 15px;
+  margin: 0 1em;
+  background-color: black;
+  color: white;
+}
+@media only screen and (max-width: 600px) {
+  .paragraph {
+    width: 240px;
+  }
+  .row {
+    margin-bottom: 38px;
+  }
+  .howToPlaySection {
+    margin: 2em 1em;
+  }
+}
