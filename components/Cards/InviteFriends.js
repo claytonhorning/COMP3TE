@@ -40,8 +40,6 @@ export default function InviteFriendsCard() {
     const userQuery = query(databaseRef, where("email", "==", email));
     const userQuerySnapshot = await getDocs(userQuery);
 
-    console.log(userQuery);
-
     userQuerySnapshot.forEach((doc) => {
       recievingUser = doc.id;
     });
@@ -57,13 +55,13 @@ export default function InviteFriendsCard() {
     const userSendingRef = doc(database, "Users", currentUser.uid);
     // Add friend to sent array of current user
     await updateDoc(userSendingRef, {
-      "friends.sent": arrayUnion(friend),
+      "friends.sent": arrayUnion(recievingUser),
     });
     // Add current user to recpient recieved
     // 1. get uid of entered email
     const userRecievingRef = doc(database, "Users", recievingUser);
     await updateDoc(userRecievingRef, {
-      "friends.recieved": arrayUnion(currentUser.email),
+      "friends.recieved": arrayUnion(currentUser.uid),
     });
   };
 

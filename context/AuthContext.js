@@ -32,7 +32,7 @@ export function AuthProvider({ children }) {
   }
 
   function signupFacebook() {
-    return signInWithPopup(auth, googleProvider);
+    return signInWithPopup(auth, facebookAuthProvider);
   }
 
   useEffect(() => {

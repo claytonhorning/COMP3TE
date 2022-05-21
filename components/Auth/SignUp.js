@@ -64,11 +64,8 @@ export default function SignUp({ open, handleClose }) {
         setDoc(doc(databaseRef, auth.currentUser.uid), {
           name: res.user.displayName,
           email: res.user.email,
-          friends: {
-            sent: [],
-            recieved: [],
-            accepted: [],
-          },
+          avatar: res.user.photoURL,
+          metadata: { ...res.user.metadata },
         });
         setInputs({ firstName: "", lastName: "", email: "", password: "" });
         setErrors({});
@@ -81,14 +78,12 @@ export default function SignUp({ open, handleClose }) {
     signupFacebook()
       .then((res) => {
         setSignUpOpen(false);
+        console.log(res);
         setDoc(doc(databaseRef, auth.currentUser.uid), {
           name: res.user.displayName,
           email: res.user.email,
-          friends: {
-            sent: [],
-            recieved: [],
-            accepted: [],
-          },
+          avatar: res.user.photoURL,
+          metadata: { ...res.user.metadata },
         });
         setInputs({ firstName: "", lastName: "", email: "", password: "" });
         setErrors({});
