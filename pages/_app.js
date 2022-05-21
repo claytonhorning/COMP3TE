@@ -1,10 +1,13 @@
 import "../styles/globals.css";
 import { AuthProvider } from "../context/AuthContext";
+import { AlertProvider } from "../context/AlertContext";
 
 function MyApp({ Component, pageProps }) {
   return (
     <AuthProvider>
-      <Component {...pageProps} />
+      <AlertProvider>
+        <Component {...pageProps} />
+      </AlertProvider>
     </AuthProvider>
   );
 }

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   CardHeader,
   TextField,
@@ -7,6 +7,8 @@ import {
   CardContent,
   CardActions,
   Card,
+  Alert,
+  Snackbar,
 } from "@mui/material";
 import { AddCircle } from "@mui/icons-material";
 import { app, database } from "../../firebaseConfig";
@@ -18,36 +20,64 @@ import {
   getDocs,
   getDoc,
   doc,
+  setDoc,
+  updateDoc,
+  arrayUnion,
 } from "firebase/firestore";
+import { useAuth } from "../../context/AuthContext";
+import { useAlert } from "../../context/AlertContext";
 
 export default function InviteFriendsCard() {
   const [friend, setFriend] = useState("");
   const databaseRef = collection(database, "Users");
+  const { currentUser } = useAuth();
+  const { setAlert } = useAlert();
+  const [error, setError] = useState("");
+
+  let recievingUser = null;
 
   const checkUserExists = async (email) => {
-    let user = null;
     const userQuery = query(databaseRef, where("email", "==", email));
-
     const userQuerySnapshot = await getDocs(userQuery);
 
-    if (userQuerySnapshot.empty) {
-      console.log("empty");
-    } else {
-      console.log("not empty");
-    }
+    console.log(userQuery);
 
     userQuerySnapshot.forEach((doc) => {
-      console.log(doc.id, " => ", doc.data());
-      user = doc.data();
+      recievingUser = doc.id;
+    });
+
+    return !userQuerySnapshot.empty;
+  };
+
+  useEffect(() => {
+    setError("");
+  }, [friend]);
+
+  const handleFriendRequestSent = async () => {
+    const userSendingRef = doc(database, "Users", currentUser.uid);
+    // Add friend to sent array of current user
+    await updateDoc(userSendingRef, {
+      "friends.sent": arrayUnion(friend),
+    });
+    // Add current user to recpient recieved
+    // 1. get uid of entered email
+    const userRecievingRef = doc(database, "Users", recievingUser);
+    await updateDoc(userRecievingRef, {
+      "friends.recieved": arrayUnion(currentUser.email),
     });
   };
 
-  const handleInviteFriend = () => {
-    if (checkUserExists(friend)) {
-      // Add to the friends list
-      console.log("user exists");
+  const handleInviteFriend = async () => {
+    if (friend === currentUser.email) {
+      setError("Cannot add yourself as a friend.");
+    } else if (await checkUserExists(friend)) {
+      await handleFriendRequestSent();
+
+      setFriend("");
+      // Send alert that request was sent
+      setAlert({ type: "success", message: "Friend request sent!" });
     } else {
-      // Set error to user does not exist
+      setError("User does not exist.");
     }
   };
 
@@ -67,7 +97,10 @@ export default function InviteFriendsCard() {
           variant="standard"
           fullWidth
           name="friend"
+          value={friend}
           onChange={(e) => setFriend(e.target.value)}
+          error={error !== "" && true}
+          helperText={error}
         />
       </CardContent>
       <CardActions>

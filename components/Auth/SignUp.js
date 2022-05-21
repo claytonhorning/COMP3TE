@@ -42,6 +42,11 @@ export default function SignUp({ open, handleClose }) {
         setDoc(doc(databaseRef, auth.currentUser.uid), {
           name: `${inputs.firstName} ${inputs.lastName}`,
           email: inputs.email,
+          friends: {
+            sent: [],
+            recieved: [],
+            accepted: [],
+          },
         });
         setInputs({ firstName: "", lastName: "", email: "", password: "" });
         setErrors({});
@@ -59,6 +64,11 @@ export default function SignUp({ open, handleClose }) {
         setDoc(doc(databaseRef, auth.currentUser.uid), {
           name: res.user.displayName,
           email: res.user.email,
+          friends: {
+            sent: [],
+            recieved: [],
+            accepted: [],
+          },
         });
         setInputs({ firstName: "", lastName: "", email: "", password: "" });
         setErrors({});
@@ -67,13 +77,18 @@ export default function SignUp({ open, handleClose }) {
         handleError(error.message, "server");
       });
   };
-  const handleSignUpWithFacebook = async () => {
+  const handleSignUpWithFacebook = () => {
     signupFacebook()
       .then((res) => {
         setSignUpOpen(false);
         setDoc(doc(databaseRef, auth.currentUser.uid), {
           name: res.user.displayName,
           email: res.user.email,
+          friends: {
+            sent: [],
+            recieved: [],
+            accepted: [],
+          },
         });
         setInputs({ firstName: "", lastName: "", email: "", password: "" });
         setErrors({});
