@@ -26,11 +26,13 @@ import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import Divider from "@mui/material/Divider";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import { useAlert } from "../../context/AlertContext";
 
-export default function ListRequests() {
+export default function ListFriendRequests() {
   const { currentUser } = useAuth();
   const userRef = doc(database, "Users", currentUser.uid);
   const [friendRequestUsers, setFriendRequestUsers] = useState([]);
+  const { setAlert } = useAlert();
 
   useEffect(() => {
     const unsubscribe = onSnapshot(userRef, (userData) => {
@@ -74,11 +76,13 @@ export default function ListRequests() {
       "friends.accepted": arrayUnion(userSentRequestId),
       "friends.recieved": arrayRemove(userSentRequestId),
     });
+
+    setAlert({ type: "success", message: "Friend request accepted!" });
   };
 
   console.log(friendRequestUsers);
   return (
-    <Box sx={{ marginTop: "1em" }}>
+    <Box sx={{ marginTop: "1em", marginBottom: "2em" }}>
       <Typography sx={{ mb: ".5em" }}>Friend requests</Typography>
       <List
         sx={{
@@ -92,18 +96,20 @@ export default function ListRequests() {
           friendRequestUsers.map((user, index) => {
             return (
               <div key={user.email}>
-                <ListItemAvatar>
-                  <Avatar />
-                </ListItemAvatar>
-                <ListItemText
-                  primary={user.name}
-                  secondary={truncateString(user.email, 18)}
-                />
-                <Button onClick={() => handleAcceptRequest(user.id)}>
-                  <CheckCircleIcon color="success" fontSize={"medium"} />
-                </Button>
+                <ListItem button>
+                  <ListItemAvatar>
+                    <Avatar />
+                  </ListItemAvatar>
+                  <ListItemText
+                    primary={user.name}
+                    secondary={truncateString(user.email, 18)}
+                  />
+                  <Button onClick={() => handleAcceptRequest(user.id)}>
+                    <CheckCircleIcon color="success" fontSize={"medium"} />
+                  </Button>
 
-                {friendRequestUsers.length - 1 !== index && <Divider />}
+                  {friendRequestUsers.length - 1 !== index && <Divider />}
+                </ListItem>
               </div>
             );
           })}

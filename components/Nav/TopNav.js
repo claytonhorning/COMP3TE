@@ -135,7 +135,7 @@ const TopNav = () => {
                 {currentUser && (
                   <Avatar
                     alt={currentUser.displayName}
-                    src={currentUser.photoURL}
+                    src={currentUser.avatar}
                   />
                 )}
               </IconButton>
