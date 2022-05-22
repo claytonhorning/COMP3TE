@@ -1,40 +1,24 @@
 import React, { useEffect, useState } from "react";
-
 import { styled } from "@mui/material/styles";
-import Card from "@mui/material/Card";
-import CardHeader from "@mui/material/CardHeader";
-import CardMedia from "@mui/material/CardMedia";
-import CardContent from "@mui/material/CardContent";
-import CardActions from "@mui/material/CardActions";
-import Collapse from "@mui/material/Collapse";
-import Avatar from "@mui/material/Avatar";
-import IconButton, { IconButtonProps } from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import { red } from "@mui/material/colors";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import ShareIcon from "@mui/icons-material/Share";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
 import {
   TextField,
   Button,
-  List,
-  ListItem,
-  ListItemAvatar,
-  ListItemText,
+  Typography,
+  IconButton,
+  CardActions,
+  CardContent,
+  CardHeader,
+  Card,
 } from "@mui/material";
-
 import { AddCircle } from "@mui/icons-material";
-import { app, database } from "../../firebaseConfig";
+import { database } from "../../firebaseConfig";
 import {
   collection,
-  addDoc,
   query,
   where,
   getDocs,
   getDoc,
   doc,
-  setDoc,
   updateDoc,
   arrayUnion,
 } from "firebase/firestore";
@@ -75,9 +59,8 @@ export default function InviteFriendsCard() {
 
     if (docSnap.exists()) {
       let user = docSnap.data();
-      console.log(user.friends.sent);
 
-      if (user.friends.sent.includes(recievingUser)) {
+      if (user.friends?.sent?.includes(recievingUser)) {
         return true;
       } else {
         return false;

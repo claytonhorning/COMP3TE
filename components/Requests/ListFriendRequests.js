@@ -80,7 +80,6 @@ export default function ListFriendRequests() {
     setAlert({ type: "success", message: "Friend request accepted!" });
   };
 
-  console.log(friendRequestUsers);
   return (
     <Box sx={{ marginTop: "1em", marginBottom: "2em" }}>
       <Typography sx={{ mb: ".5em" }}>Friend requests</Typography>

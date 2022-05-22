@@ -39,15 +39,14 @@ export default function SignUp({ open, handleClose }) {
     signup(inputs.email, inputs.password)
       .then((res) => {
         setSignUpOpen(false);
-        setDoc(doc(databaseRef, auth.currentUser.uid), {
-          name: `${inputs.firstName} ${inputs.lastName}`,
-          email: inputs.email,
-          friends: {
-            sent: [],
-            recieved: [],
-            accepted: [],
+        setDoc(
+          doc(databaseRef, auth.currentUser.uid),
+          {
+            name: `${inputs.firstName} ${inputs.lastName}`,
+            email: inputs.email,
           },
-        });
+          { merge: true }
+        );
         setInputs({ firstName: "", lastName: "", email: "", password: "" });
         setErrors({});
       })
@@ -61,12 +60,16 @@ export default function SignUp({ open, handleClose }) {
       .then((res) => {
         setSignUpOpen(false);
         console.log(res);
-        setDoc(doc(databaseRef, auth.currentUser.uid), {
-          name: res.user.displayName,
-          email: res.user.email,
-          avatar: res.user.photoURL,
-          metadata: { ...res.user.metadata },
-        });
+        setDoc(
+          doc(databaseRef, auth.currentUser.uid),
+          {
+            name: res.user.displayName,
+            email: res.user.email,
+            avatar: res.user.photoURL,
+            metadata: { ...res.user.metadata },
+          },
+          { merge: true }
+        );
         setInputs({ firstName: "", lastName: "", email: "", password: "" });
         setErrors({});
       })
@@ -79,12 +82,16 @@ export default function SignUp({ open, handleClose }) {
       .then((res) => {
         setSignUpOpen(false);
         console.log(res);
-        setDoc(doc(databaseRef, auth.currentUser.uid), {
-          name: res.user.displayName,
-          email: res.user.email,
-          avatar: res.user.photoURL,
-          metadata: { ...res.user.metadata },
-        });
+        setDoc(
+          doc(databaseRef, auth.currentUser.uid),
+          {
+            name: res.user.displayName,
+            email: res.user.email,
+            avatar: res.user.photoURL,
+            metadata: { ...res.user.metadata },
+          },
+          { merge: true }
+        );
         setInputs({ firstName: "", lastName: "", email: "", password: "" });
         setErrors({});
         console.log(res);
