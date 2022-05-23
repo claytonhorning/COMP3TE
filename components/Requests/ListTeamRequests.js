@@ -47,13 +47,7 @@ export default function ListTeamRequests() {
         if (teamDoc.exists()) {
           let teamRequest = { ...teamDoc.data(), teamId };
 
-          let creatorRef = doc(database, "Users", teamDoc.data().creator);
-          let creator = await getDoc(creatorRef);
-
-          setTeamRequests((prevState) => [
-            ...prevState,
-            { ...teamRequest, creatorName: creator.data().name },
-          ]);
+          setTeamRequests((prevState) => [...prevState, { ...teamRequest }]);
         } else {
           // doc.data() will be undefined in this case
           console.log("No such document!");
@@ -80,6 +74,7 @@ export default function ListTeamRequests() {
     await updateDoc(userSendingRef, {
       "teams.accepted": teamId,
       "teams.sent": arrayRemove(teamId),
+      team: teamId,
     });
 
     // Move current users email from sent to accepted for other user
@@ -87,6 +82,7 @@ export default function ListTeamRequests() {
     await updateDoc(userRecievingRef, {
       "teams.accepted": teamId,
       "teams.recieved": arrayRemove(teamId),
+      team: teamId,
     });
 
     setAlert({ type: "success", message: "Friend request accepted!" });
@@ -109,15 +105,21 @@ export default function ListTeamRequests() {
               <div key={team.id}>
                 <ListItem button>
                   <ListItemAvatar>
-                    <Avatar />
+                    <Avatar
+                      src={
+                        team.creator.avatar !== ("" || undefined)
+                          ? team.creator.avatar
+                          : ""
+                      }
+                    />
                   </ListItemAvatar>
                   <ListItemText
                     primary={team.name}
-                    secondary={truncateString(team.creatorName, 18)}
+                    secondary={truncateString(team.creator.name, 18)}
                   />
                   <Button
                     onClick={() =>
-                      handleAcceptRequest(team.teamId, team.creator)
+                      handleAcceptRequest(team.teamId, team.creator.id)
                     }
                   >
                     <CheckCircleIcon color="success" fontSize={"medium"} />

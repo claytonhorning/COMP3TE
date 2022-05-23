@@ -59,15 +59,26 @@ export default function InviteTeamCard() {
   }, []);
 
   const sendTeamRequest = async () => {
+    const currentUserDoc = await getDoc(currentUserRef);
     // Create the team in the database
     const teamDoc = await addDoc(teamDatabaseRef, {
       name: team,
-      creator: currentUser.uid,
+      creator: {
+        id: currentUser.uid,
+        avatar:
+          currentUserDoc.data().avatar !== undefined
+            ? currentUserDoc.data().avatar
+            : "",
+        email: currentUserDoc.data().email,
+        name: currentUserDoc.data().name,
+      },
       members: [currentUser.uid],
     });
 
     await updateDoc(currentUserRef, {
       "teams.sent": arrayUnion(teamDoc.id),
+      team: teamDoc.id,
+      "teams.accepted": teamDoc.id,
     });
 
     if (invite1.id !== undefined) {
