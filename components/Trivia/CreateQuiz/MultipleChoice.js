@@ -48,6 +48,8 @@ const MultipleChoice = ({ quizId }) => {
       await setDoc(
         quizRef,
         {
+          active: false,
+          current: false,
           questions: [
             ...questions,
             {

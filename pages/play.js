@@ -9,6 +9,8 @@ import InviteTeamCard from "../components/Cards/InviteTeam";
 import TopBarInfo from "../components/TopBar/TopBarInfo";
 import CompetitionCountdownTimer from "../components/Countdown/CompetitionCountdownTimer";
 import Trivia from "../components/Trivia";
+import { onSnapshot, collection } from "firebase/firestore";
+import { database } from "../firebaseConfig";
 
 export default function Dashboard() {
   const [player, setPlayer] = useState();
@@ -73,6 +75,16 @@ export default function Dashboard() {
       }
     }
   }, [timeInterval]);
+
+  useEffect(() => {
+    const quizzesRef = collection(database, "Quizzes");
+    const unsubscribe = onSnapshot(quizzesRef, async (quizData) => {
+      const quizzes = await quizData.data();
+      console.log(quizzes);
+    });
+
+    return unsubscribe;
+  }, []);
 
   return (
     <Box>
