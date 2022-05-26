@@ -12,13 +12,18 @@ export default function TopBarInfo() {
   useEffect(() => {
     const unsubscribe = onSnapshot(currentUserRef, async (userData) => {
       const teamId = userData.data().team;
-      const teamDocRef = doc(database, "Teams", teamId);
-      const teamDoc = await getDoc(teamDocRef);
 
-      if (teamDoc.exists()) {
-        setTeam({ ...teamDoc.data() });
+      if (teamId) {
+        const teamDocRef = doc(database, "Teams", teamId);
+        const teamDoc = await getDoc(teamDocRef);
+
+        if (teamDoc.exists()) {
+          setTeam({ ...teamDoc.data() });
+        } else {
+          console.log("Could not get team data");
+        }
       } else {
-        console.log("Could not get team data");
+        ("No team");
       }
     });
 
@@ -39,17 +44,25 @@ export default function TopBarInfo() {
         borderRadius: 1,
       }}
     >
-      <Box>
+      <Box sx={{ display: "flex" }}>
+        <Typography mr={2} variant="h6">
+          {" "}
+          <span style={{ fontWeight: 600 }}>Prize:</span> $100
+        </Typography>
         {team.name !== ("" || undefined) ? (
-          <Typography variant="h6">
+          <Typography mr={2} variant="h6">
             <span style={{ fontWeight: 600 }}>Team:</span>{" "}
             {team.name !== ("" || undefined) ? team.name : "No team"}
           </Typography>
         ) : (
-          <Typography color={"#ccc"} variant="h6">
+          <Typography mr={2} color={"#ccc"} variant="h6">
             No team
           </Typography>
         )}
+        {/* <Typography mr={2} variant="h6">
+          {" "}
+          <span style={{ fontWeight: 600 }}>Trivia:</span> Question #1
+        </Typography> */}
       </Box>
     </Box>
   );

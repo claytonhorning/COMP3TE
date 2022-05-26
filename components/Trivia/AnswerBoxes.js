@@ -15,37 +15,37 @@ export default function AnswerBoxes({ choices, active }) {
       <Stack spacing={2} sx={{ flexGrow: 1, marginRight: 2 }}>
         <AnswerBox
           onClick={() => handleSelected(choices[0].id)}
-          selected={selected === choices[0].id ? true : false}
-          answer={choices[0].answer}
+          selected={selected === choices[0]?.id ? true : false}
+          answer={choices[0]?.answer}
           active={active}
         >
-          {choices[0].text}
+          {choices[0]?.text}
         </AnswerBox>
         <AnswerBox
           onClick={() => handleSelected(choices[1].id)}
-          selected={selected === choices[1].id ? true : false}
-          answer={choices[1].answer}
+          selected={selected === choices[1]?.id ? true : false}
+          answer={choices[1]?.answer}
           active={active}
         >
-          {choices[1].text}
+          {choices[1]?.text}
         </AnswerBox>
       </Stack>
       <Stack spacing={2} sx={{ flexGrow: 1 }}>
         <AnswerBox
           onClick={() => handleSelected(choices[2].id)}
-          selected={selected === choices[2].id ? true : false}
-          answer={choices[2].answer}
+          selected={selected === choices[2]?.id ? true : false}
+          answer={choices[2]?.answer}
           active={active}
         >
-          {choices[2].text}
+          {choices[2]?.text}
         </AnswerBox>
         <AnswerBox
           onClick={() => handleSelected(choices[3].id)}
-          selected={selected === choices[3].id ? true : false}
-          answer={choices[3].answer}
+          selected={selected === choices[3]?.id ? true : false}
+          answer={choices[3]?.answer}
           active={active}
         >
-          {choices[3].text}
+          {choices[3]?.text}
         </AnswerBox>
       </Stack>
     </Box>

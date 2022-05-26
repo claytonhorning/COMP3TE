@@ -20,7 +20,6 @@ export default function SignUp({ open, handleClose }) {
     password: "",
   });
   const [errors, setErrors] = useState({});
-  const router = useRouter();
   const auth = getAuth();
 
   const { signup, signupGoogle, signupFacebook } = useAuth();
@@ -44,6 +43,7 @@ export default function SignUp({ open, handleClose }) {
           {
             name: `${inputs.firstName} ${inputs.lastName}`,
             email: inputs.email,
+            role: "user",
           },
           { merge: true }
         );
@@ -67,6 +67,7 @@ export default function SignUp({ open, handleClose }) {
             email: res.user.email,
             avatar: res.user.photoURL,
             metadata: { ...res.user.metadata },
+            role: "user",
           },
           { merge: true }
         );
@@ -89,6 +90,7 @@ export default function SignUp({ open, handleClose }) {
             email: res.user.email,
             avatar: res.user.photoURL,
             metadata: { ...res.user.metadata },
+            role: "user",
           },
           { merge: true }
         );

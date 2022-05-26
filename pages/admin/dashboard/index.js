@@ -30,7 +30,7 @@ export default function Dashboard() {
         router.push(`dashboard/quizzes/${doc.id}`);
       });
     } else {
-      setError("Quiz name must be atleast 5 characters");
+      setError("Quiz name must be at least 5 characters");
     }
   };
 
