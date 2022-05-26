@@ -52,7 +52,7 @@ export default function Trivia({ questionIndex }) {
         }}
       >
         <Typography color={"#878787"} variant="h5">
-          Question #1
+          Question {questionIndex + 1}
         </Typography>
         <Box sx={{ display: "flex", alignItems: "center" }}>
           <Alarm sx={{ mr: 1 }} />
