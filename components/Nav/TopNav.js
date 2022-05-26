@@ -40,7 +40,7 @@ const TopNav = () => {
   };
 
   return (
-    <AppBar position="static">
+    <AppBar sx={{ backgroundColor: "black" }} position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
@@ -55,7 +55,7 @@ const TopNav = () => {
               fontFamily: "Montserrat",
               fontWeight: 700,
               letterSpacing: ".3rem",
-              color: "inherit",
+              color: "'inherit'",
               textDecoration: "none",
             }}
           >
@@ -118,7 +118,9 @@ const TopNav = () => {
             COMP3TE
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            {pages.map((page) => (
+            {/* Map through pages here */}
+
+            {/* {pages.map((page) => (
               <Button
                 key={page}
                 onClick={handleCloseNavMenu}
@@ -126,7 +128,7 @@ const TopNav = () => {
               >
                 {page}
               </Button>
-            ))}
+            ))} */}
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>

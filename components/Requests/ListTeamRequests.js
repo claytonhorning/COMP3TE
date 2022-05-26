@@ -46,7 +46,6 @@ export default function ListTeamRequests() {
 
         if (teamDoc.exists()) {
           let teamRequest = { ...teamDoc.data(), teamId };
-
           setTeamRequests((prevState) => [...prevState, { ...teamRequest }]);
         } else {
           // doc.data() will be undefined in this case
@@ -57,8 +56,6 @@ export default function ListTeamRequests() {
 
     return unsubscribe;
   }, []);
-
-  console.log(teamRequests);
 
   const truncateString = (string, chars) => {
     if (string.length > chars) {

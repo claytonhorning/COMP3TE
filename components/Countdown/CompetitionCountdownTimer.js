@@ -32,12 +32,17 @@ export default function CompetitionCountdownTimer() {
 
   return (
     <Box
-      sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        paddingTop: 2,
+      }}
     >
-      <Typography textAlign={"center"} variant="h6" mb={1} color="white">
+      <Typography textAlign={"center"} variant="h6" mb={1} color="black">
         Competition starts May 27th @ 6PM MST{" "}
       </Typography>
-      <Typography textAlign={"center"} variant="h4" color="white">
+      <Typography textAlign={"center"} variant="h4" color="black">
         {days} days {hours} hours {minutes} minutes {seconds} seconds
       </Typography>
     </Box>

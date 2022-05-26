@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, Container } from "@mui/system";
-import { Typography } from "@mui/material";
+import { Typography, Container, Box } from "@mui/material";
 import { useAuth } from "../../context/AuthContext";
 import { doc, getDoc, onSnapshot } from "firebase/firestore";
 import { database } from "../../firebaseConfig";
@@ -26,17 +25,18 @@ export default function TopBarInfo() {
     return unsubscribe;
   }, []);
 
-  console.log(team);
-
   return (
     <Box
       sx={{
-        backgroundColor: "#F6F6F6",
+        backgroundColor: "#9921e8",
+        backgroundImage: "linear-gradient(315deg, #7f53ac 0%, #647dee 74%)",
         height: 40,
         display: "flex",
         alignItems: "center",
         paddingX: 2,
         paddingY: 3,
+        color: "white",
+        borderRadius: 1,
       }}
     >
       <Box>

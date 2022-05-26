@@ -133,7 +133,7 @@ export default function InviteFriendsCard() {
       <CardHeader title={"Invite your friends"}></CardHeader>
       <CardContent>
         <Typography paragraph>
-          Invite as many friends as you'd like. You can compete with 3 on a
+          Invite as many friends as you&apos;d like. You can compete with 3 on a
           team.
         </Typography>
         <TextField
