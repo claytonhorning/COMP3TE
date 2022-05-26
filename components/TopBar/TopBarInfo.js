@@ -39,9 +39,13 @@ export default function TopBarInfo() {
         borderRadius: 1,
       }}
     >
-      <Box>
+      <Box sx={{ display: "flex" }}>
+        <Typography mr={2} variant="h6">
+          {" "}
+          <span style={{ fontWeight: 600 }}>Prize:</span> $100
+        </Typography>
         {team.name !== ("" || undefined) ? (
-          <Typography variant="h6">
+          <Typography mr={2} variant="h6">
             <span style={{ fontWeight: 600 }}>Team:</span>{" "}
             {team.name !== ("" || undefined) ? team.name : "No team"}
           </Typography>
@@ -50,6 +54,10 @@ export default function TopBarInfo() {
             No team
           </Typography>
         )}
+        <Typography mr={2} variant="h6">
+          {" "}
+          <span style={{ fontWeight: 600 }}>Trivia:</span> Question #1
+        </Typography>
       </Box>
     </Box>
   );

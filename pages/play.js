@@ -12,6 +12,7 @@ import Trivia from "../components/Trivia";
 
 export default function Dashboard() {
   const [player, setPlayer] = useState();
+  const [questionIndex, setQuestionIndex] = useState();
 
   const styles = {
     sidebar: {
@@ -49,6 +50,20 @@ export default function Dashboard() {
     };
   }, []);
 
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      if (seconds > 0) {
+        setSeconds((prevCount) => prevCount - 1);
+      } else {
+        clearInterval(intervalId);
+      }
+    }, 1000);
+
+    getQuiz();
+
+    return () => clearInterval(intervalId);
+  }, []);
+
   return (
     <Box>
       <TopNav />
@@ -81,7 +96,7 @@ export default function Dashboard() {
               <div style={{ flexGrow: 1 }} id="video"></div>
             </Box> */}
 
-            <Trivia />
+            <Trivia questionIndex={0} />
           </Box>
 
           <Box sx={styles.sidebar}>
