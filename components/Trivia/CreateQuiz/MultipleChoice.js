@@ -75,10 +75,10 @@ const MultipleChoice = ({ quizId }) => {
 
   return (
     <>
-      <Stack spacing={4}>
+      <Box>
         <Stack spacing={2}>
           <TextField
-            sx={{ width: "50%" }}
+            sx={{ width: "100%" }}
             id="outlined-basic"
             label="Question"
             variant="outlined"
@@ -87,7 +87,7 @@ const MultipleChoice = ({ quizId }) => {
             onChange={(e) => setQuestion(e.target.value)}
             value={question}
           />
-          <Box sx={{ width: "50%" }}>
+          <Box sx={{ width: "100%" }}>
             <Box
               sx={{
                 display: "flex",
@@ -142,7 +142,7 @@ const MultipleChoice = ({ quizId }) => {
               <TextField
                 sx={{
                   flexGrow: 1,
-                  marginRight: 1,
+                  marginLeft: 1,
                   borderRadius: 1,
                   backgroundColor: option2.answer && "#d7f7d9",
                 }}
@@ -232,7 +232,7 @@ const MultipleChoice = ({ quizId }) => {
               <TextField
                 sx={{
                   flexGrow: 1,
-                  marginRight: 1,
+                  marginLeft: 1,
                   borderRadius: 1,
                   backgroundColor: option4.answer && "#d7f7d9",
                 }}
@@ -276,7 +276,7 @@ const MultipleChoice = ({ quizId }) => {
             </Box>
           </Box>
         </Stack>
-      </Stack>
+      </Box>
       <Button onClick={handleCreateQuestion} sx={{ mt: 2 }} variant="contained">
         Add question
       </Button>

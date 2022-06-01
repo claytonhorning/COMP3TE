@@ -29,11 +29,12 @@ export default function Dashboard() {
   // Create quiz and send quiz id to question
   const quizzesRef = collection(database, "Quizzes");
   const router = useRouter();
-  const [error, setError] = useState("");
-  const [allQuizzes, setAllQuizzes] = useState([]);
-  const [selectLiveQuiz, setSelectLiveQuiz] = useState("");
-  const [selectCurrentQuiz, setSelectCurrentQuiz] = useState("");
+  const [error, setError] = useState({});
   const { setAlert } = useAlert();
+
+  const handleSetError = (input, msg) => {
+    setError((prevState) => ({ ...prevState }, { [input]: msg }));
+  };
 
   const createNewQuiz = async () => {
     if (quizName.length >= 5) {
@@ -44,46 +45,32 @@ export default function Dashboard() {
         router.push(`dashboard/quizzes/${doc.id}`);
       });
     } else {
-      setError("Quiz name must be at least 5 characters");
+      handleSetError("newQuiz", "Quiz name must be at least 5 characters");
     }
   };
 
   useEffect(() => {
-    setError("");
+    setError({});
   }, [quizName]);
 
-  useEffect(() => {
-    const getAllQuizzes = async () => {
-      const quizzes = await getDocs(quizzesRef);
-      setAllQuizzes([]);
+  // Get all quizzes code
 
-      quizzes.forEach((quiz) => {
-        const quizId = quiz.id;
+  // useEffect(() => {
+  //   const getAllQuizzes = async () => {
+  //     const quizzes = await getDocs(quizzesRef);
+  //     setAllQuizzes([]);
 
-        setAllQuizzes((prevState) => [
-          ...prevState,
-          { ...quiz.data(), id: quizId },
-        ]);
-      });
-    };
-    getAllQuizzes();
-  }, []);
+  //     quizzes.forEach((quiz) => {
+  //       const quizId = quiz.id;
 
-  const handleSetQuizActive = async () => {
-    const quizRef = doc(database, "Quizzes", selectLiveQuiz);
-    await updateDoc(quizRef, { active: true });
-
-    setAlert({ type: "success", message: "Live event started!" });
-    setSelectLiveQuiz("");
-  };
-
-  const handleSetCurrentQuiz = async () => {
-    const quizRef = doc(database, "Quizzes", selectCurrentQuiz);
-    await updateDoc(quizRef, { current: true });
-
-    setAlert({ type: "success", message: "Saved as current quiz!" });
-    setSelectCurrentQuiz("");
-  };
+  //       setAllQuizzes((prevState) => [
+  //         ...prevState,
+  //         { ...quiz.data(), id: quizId },
+  //       ]);
+  //     });
+  //   };
+  //   getAllQuizzes();
+  // }, []);
 
   return (
     <React.Fragment>
@@ -101,57 +88,31 @@ export default function Dashboard() {
             <Button onClick={createNewQuiz} variant={"contained"}>
               Create a new quiz
             </Button>
-            {error !== "" && (
+            {error.newQuiz !== "" && (
               <Typography mt={1} color="error">
-                {error}
+                {error.newQuiz}
               </Typography>
             )}
+          </Stack>
 
-            <FormControl fullWidth>
-              <InputLabel id="quiz">Quiz</InputLabel>
-              <Select
-                id="quiz"
-                label="quiz"
-                value={selectCurrentQuiz}
-                onChange={(e) => setSelectCurrentQuiz(e.target.value)}
-              >
-                {allQuizzes !== [] &&
-                  allQuizzes.map((quiz) => {
-                    return (
-                      <MenuItem key={quiz.id} value={quiz.id}>
-                        {quiz.name}
-                      </MenuItem>
-                    );
-                  })}
-              </Select>
-            </FormControl>
-            <Button onClick={handleSetCurrentQuiz} variant={"contained"}>
-              Set current quiz
-            </Button>
-          </Stack>
-          <Stack spacing={2} width={"50%"} ml={1}>
-            <FormControl fullWidth>
-              <InputLabel id="quiz">Quiz</InputLabel>
-              <Select
-                id="quiz"
-                label="quiz"
-                value={selectLiveQuiz}
-                onChange={(e) => setSelectQuiz(e.target.value)}
-              >
-                {allQuizzes !== [] &&
-                  allQuizzes.map((quiz) => {
-                    return (
-                      <MenuItem key={quiz.id} value={quiz.id}>
-                        {quiz.name}
-                      </MenuItem>
-                    );
-                  })}
-              </Select>
-            </FormControl>
-            <Button onClick={handleSetQuizActive} variant={"contained"}>
-              Start live session
-            </Button>
-          </Stack>
+          {/* <FormControl fullWidth>
+            <InputLabel id="quiz">Quiz</InputLabel>
+            <Select
+              id="quiz"
+              label="quiz"
+              value={selectLiveQuiz}
+              onChange={(e) => setSelectLiveQuiz(e.target.value)}
+            >
+              {allQuizzes !== [] &&
+                allQuizzes.map((quiz) => {
+                  return (
+                    <MenuItem key={quiz.id} value={quiz.id}>
+                      {quiz.name}
+                    </MenuItem>
+                  );
+                })}
+            </Select>
+          </FormControl> */}
         </Box>
       </Container>
     </React.Fragment>

@@ -9,13 +9,26 @@ import InviteTeamCard from "../components/Cards/InviteTeam";
 import TopBarInfo from "../components/TopBar/TopBarInfo";
 import CompetitionCountdownTimer from "../components/Countdown/CompetitionCountdownTimer";
 import Trivia from "../components/Trivia";
-import { onSnapshot, collection } from "firebase/firestore";
+import {
+  onSnapshot,
+  collection,
+  query,
+  where,
+  getDoc,
+  getDocs,
+  doc,
+} from "firebase/firestore";
 import { database } from "../firebaseConfig";
+import { ScoreProvider, useScoring } from "../context/ScoreContext";
+import { useAuth } from "../context/AuthContext";
+import LeaderboardCard from "../components/Cards/Leaderboard";
 
 export default function Dashboard() {
   const [player, setPlayer] = useState();
-  const [questionIndex, setQuestionIndex] = useState(0);
-  const [timeInterval, setTimeInterval] = useState(20);
+  const [questionIndex, setQuestionIndex] = useState();
+  const [currentQuiz, setCurrentQuiz] = useState({});
+  const [quizId, setQuizId] = useState("");
+  const { currentUser } = useAuth();
 
   const styles = {
     sidebar: {
@@ -37,53 +50,46 @@ export default function Dashboard() {
     layout: "video",
   };
 
-  useEffect(() => {
-    const script = document.createElement("script");
-    script.src = "https://player.twitch.tv/js/embed/v1.js";
-    script.async = true;
-    document.body.appendChild(script);
+  const getCurrentQuiz = async () => {
+    let quizId = "";
+    const q = query(
+      collection(database, "Quizzes"),
+      where("current", "==", true)
+    );
 
-    const loadPlayer = async () => {
-      let embed = await new Twitch.Embed("video", options);
-      setPlayer(embed);
-    };
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+      setCurrentQuiz({ ...doc.data(), id: doc.id });
+      setQuizId(doc.id);
+      quizId = doc.id;
+    });
 
-    script.onload = async () => {
-      await loadPlayer();
-    };
-  }, []);
+    const currentQuizRef = doc(database, "Quizzes", quizId);
 
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      if (timeInterval > 0) {
-        setTimeInterval((prevCount) => prevCount - 1);
-      } else {
-        clearInterval(intervalId);
-      }
-    }, 1000);
-
-    return () => clearInterval(intervalId);
-  }, []);
-
-  const numOfQuestions = 2;
-
-  useEffect(() => {
-    if (questionIndex < numOfQuestions - 1) {
-      if (timeInterval === 0) {
-        setQuestionIndex((prevCount) => prevCount + 1);
-        setTimeInterval(20);
-      }
-    }
-  }, [timeInterval]);
-
-  useEffect(() => {
-    const quizzesRef = collection(database, "Quizzes");
-    const unsubscribe = onSnapshot(quizzesRef, async (quizData) => {
-      const quizzes = await quizData.data();
-      console.log(quizzes);
+    const unsubscribe = onSnapshot(currentQuizRef, async (quizData) => {
+      setCurrentQuiz(quizData.data());
+      setQuestionIndex(quizData.data().currentQuestion);
     });
 
     return unsubscribe;
+  };
+
+  useEffect(() => {
+    getCurrentQuiz();
+
+    // const script = document.createElement("script");
+    // script.src = "https://player.twitch.tv/js/embed/v1.js";
+    // script.async = true;
+    // document.body.appendChild(script);
+
+    // const loadPlayer = async () => {
+    //   let embed = await new Twitch.Embed("video", options);
+    //   setPlayer(embed);
+    // };
+
+    // script.onload = async () => {
+    //   await loadPlayer();
+    // };
   }, []);
 
   return (
@@ -118,14 +124,29 @@ export default function Dashboard() {
               <div style={{ flexGrow: 1 }} id="video"></div>
             </Box> */}
 
-            <Trivia key={questionIndex} questionIndex={questionIndex} />
+            <ScoreProvider quizId={quizId} currentUser={currentUser}>
+              <Trivia
+                playing={currentQuiz.active}
+                key={questionIndex}
+                questionIndex={questionIndex}
+                quizId={quizId}
+              />
+            </ScoreProvider>
           </Box>
 
           <Box sx={styles.sidebar}>
-            <InviteFriendsCard />
-            <ListFriendRequests />
-            <InviteTeamCard />
-            <ListTeamRequests />
+            {currentQuiz.active !== true ? (
+              <Box>
+                <InviteFriendsCard />
+                <ListFriendRequests />
+                <InviteTeamCard />
+                <ListTeamRequests />
+              </Box>
+            ) : (
+              <Box>
+                <LeaderboardCard quizId={quizId} currentUser={currentUser} />
+              </Box>
+            )}
           </Box>
         </Box>
       </Container>
