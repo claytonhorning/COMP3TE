@@ -35,6 +35,10 @@ export function AuthProvider({ children }) {
     return signInWithPopup(auth, facebookAuthProvider);
   }
 
+  function logout() {
+    return auth.signOut();
+  }
+
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       setCurrentUser(user);
@@ -43,7 +47,7 @@ export function AuthProvider({ children }) {
     return unsubscribe;
   }, []);
 
-  const value = { currentUser, signup, signupGoogle, signupFacebook };
+  const value = { currentUser, signup, signupGoogle, signupFacebook, logout };
   return (
     <AuthContext.Provider value={value}>
       {!loading && children}

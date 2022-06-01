@@ -16,11 +16,14 @@ import TopNav from "../../../../components/Nav/TopNav";
 import MultipleChoice from "../../../../components/Trivia/CreateQuiz/MultipleChoice";
 import { useRouter } from "next/router";
 import { useAlert } from "../../../../context/AlertContext";
+import { useAuth } from "../../../../context/AuthContext";
 
 export default function AddQuizQuestions({ data, id }) {
   let currentQuestionRef = useRef(0);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const docRef = doc(database, "Quizzes", id);
+  const router = useRouter();
+  const { currentUser } = useAuth();
 
   const [errors, setErrors] = useState({});
   const { setAlert } = useAlert();
