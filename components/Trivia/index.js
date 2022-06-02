@@ -61,7 +61,7 @@ export default function Trivia({ questionIndex, playing, quizId }) {
 
   return (
     <>
-      {playing === true ? (
+      {playing === true && (
         <Box sx={{ marginTop: 3 }}>
           <Box
             sx={{
@@ -90,8 +90,6 @@ export default function Trivia({ questionIndex, playing, quizId }) {
             </Typography>
           )}
         </Box>
-      ) : (
-        <Typography>Event hasn't started yet</Typography>
       )}
     </>
   );

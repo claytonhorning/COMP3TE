@@ -45,8 +45,8 @@ const Play = () => {
   };
 
   const options = {
-    height: 267,
-    width: 475,
+    height: currentQuiz.active ? 267 : "100%",
+    width: currentQuiz.active ? 475 : "100%",
     channel: "comp3teofficial",
     parent: "localhost",
     allowFullscreen: true,
@@ -132,12 +132,12 @@ const Play = () => {
                   />
                 </ScoreProvider>
                 <Box
+                  sx={
+                    !currentQuiz.active
+                      ? { height: "75%", marginTop: 3 }
+                      : { marginTop: 3 }
+                  }
                   id="video"
-                  sx={{
-                    display: "flex",
-
-                    marginTop: 2,
-                  }}
                 ></Box>
               </Box>
 
