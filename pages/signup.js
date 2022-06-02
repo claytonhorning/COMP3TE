@@ -6,7 +6,6 @@ import { database } from "../firebaseConfig";
 import styles from "../styles/Auth/SignUpModal.module.css";
 import { collection, doc, setDoc } from "firebase/firestore";
 import { useAuth } from "../context/AuthContext";
-import React from "react";
 
 export default function Signup() {
   const databaseRef = collection(database, "Users");
