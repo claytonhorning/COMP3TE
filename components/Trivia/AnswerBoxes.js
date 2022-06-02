@@ -1,12 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Grid, Button, Stack } from "@mui/material";
+import { database } from "../../firebaseConfig";
+import { useAuth } from "../../context/AuthContext";
+import { doc, setDoc, getDoc } from "firebase/firestore";
+import { useScoring } from "../../context/ScoreContext";
 
-export default function AnswerBoxes({ choices, active }) {
-  const [selected, setSelected] = useState();
-
-  const handleSelected = (id) => {
-    setSelected(id);
-  };
+export default function AnswerBoxes({ choices, active, quizId }) {
+  const { currentUser } = useAuth();
+  const { selectedAnswerId, setSelectedAnswerId } = useScoring();
 
   return (
     <Box
@@ -14,16 +15,16 @@ export default function AnswerBoxes({ choices, active }) {
     >
       <Stack spacing={2} sx={{ flexGrow: 1, marginRight: 2 }}>
         <AnswerBox
-          onClick={() => handleSelected(choices[0].id)}
-          selected={selected === choices[0]?.id ? true : false}
+          onClick={() => setSelectedAnswerId(choices[0].id)}
+          selected={selectedAnswerId === choices[0]?.id ? true : false}
           answer={choices[0]?.answer}
           active={active}
         >
           {choices[0]?.text}
         </AnswerBox>
         <AnswerBox
-          onClick={() => handleSelected(choices[1].id)}
-          selected={selected === choices[1]?.id ? true : false}
+          onClick={() => setSelectedAnswerId(choices[1].id)}
+          selected={selectedAnswerId === choices[1]?.id ? true : false}
           answer={choices[1]?.answer}
           active={active}
         >
@@ -32,16 +33,16 @@ export default function AnswerBoxes({ choices, active }) {
       </Stack>
       <Stack spacing={2} sx={{ flexGrow: 1 }}>
         <AnswerBox
-          onClick={() => handleSelected(choices[2].id)}
-          selected={selected === choices[2]?.id ? true : false}
+          onClick={() => setSelectedAnswerId(choices[2].id)}
+          selected={selectedAnswerId === choices[2]?.id ? true : false}
           answer={choices[2]?.answer}
           active={active}
         >
           {choices[2]?.text}
         </AnswerBox>
         <AnswerBox
-          onClick={() => handleSelected(choices[3].id)}
-          selected={selected === choices[3]?.id ? true : false}
+          onClick={() => setSelectedAnswerId(choices[3].id)}
+          selected={selectedAnswerId === choices[3]?.id ? true : false}
           answer={choices[3]?.answer}
           active={active}
         >

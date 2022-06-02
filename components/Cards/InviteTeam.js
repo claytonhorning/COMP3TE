@@ -144,7 +144,7 @@ export default function InviteTeamCard() {
           getOptionLabel={(option) => option.email || ""}
           sx={{ mt: 2 }}
           renderInput={(params) => (
-            <TextField {...params} label="Friend #1 email" variant="standard" />
+            <TextField {...params} label="Friend 1 email" variant="standard" />
           )}
         />
         <Autocomplete
@@ -157,7 +157,7 @@ export default function InviteTeamCard() {
           getOptionLabel={(option) => option.email || ""}
           sx={{ mt: 2 }}
           renderInput={(params) => (
-            <TextField {...params} label="Friend #2 email" variant="standard" />
+            <TextField {...params} label="Friend 2 email" variant="standard" />
           )}
         />
       </CardContent>

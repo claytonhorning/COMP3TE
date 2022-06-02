@@ -1,6 +1,6 @@
 import React, { createContext, useState, useContext } from "react";
 import { Alert, Snackbar, Button, IconButton } from "@mui/material";
-import { CloseIcon } from "@mui/icons-material";
+import CloseIcon from "@mui/icons-material/Close";
 
 const AlertContext = createContext();
 
@@ -11,9 +11,9 @@ export function useAlert() {
 export function AlertProvider({ children }) {
   const [open, setOpen] = useState(true);
 
-  const handleClick = () => {
+  function handleClick() {
     setOpen(true);
-  };
+  }
 
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {

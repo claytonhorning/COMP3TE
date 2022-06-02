@@ -27,6 +27,7 @@ import ListItemText from "@mui/material/ListItemText";
 import Divider from "@mui/material/Divider";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { useAlert } from "../../context/AlertContext";
+import { truncateString } from "../../utils";
 
 export default function ListTeamRequests() {
   const { currentUser } = useAuth();
@@ -49,21 +50,13 @@ export default function ListTeamRequests() {
           setTeamRequests((prevState) => [...prevState, { ...teamRequest }]);
         } else {
           // doc.data() will be undefined in this case
-          console.log("No such document!");
+          // console.log("No such document!");
         }
       });
     });
 
     return unsubscribe;
   }, []);
-
-  const truncateString = (string, chars) => {
-    if (string.length > chars) {
-      return `${string.slice(0, chars)}...`;
-    } else {
-      return string;
-    }
-  };
 
   const handleAcceptRequest = async (teamId, userSentRequestId) => {
     // Move user sent email from recieved to accepted for current user
