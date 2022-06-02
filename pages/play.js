@@ -22,13 +22,16 @@ import { database } from "../firebaseConfig";
 import { ScoreProvider, useScoring } from "../context/ScoreContext";
 import { useAuth } from "../context/AuthContext";
 import LeaderboardCard from "../components/Cards/Leaderboard";
+import withAuth from "../components/PrivateRoute";
+import { useRouter } from "next/router";
 
-export default function Dashboard() {
+const Play = () => {
   const [player, setPlayer] = useState();
   const [questionIndex, setQuestionIndex] = useState();
   const [currentQuiz, setCurrentQuiz] = useState({});
   const [quizId, setQuizId] = useState("");
   const { currentUser } = useAuth();
+  const router = useRouter();
 
   const styles = {
     sidebar: {
@@ -42,8 +45,8 @@ export default function Dashboard() {
   };
 
   const options = {
-    width: "100%",
-    height: 650,
+    height: currentQuiz.active ? 267 : "100%",
+    width: currentQuiz.active ? 475 : "100%",
     channel: "comp3teofficial",
     parent: "localhost",
     allowFullscreen: true,
@@ -77,79 +80,92 @@ export default function Dashboard() {
   useEffect(() => {
     getCurrentQuiz();
 
-    // const script = document.createElement("script");
-    // script.src = "https://player.twitch.tv/js/embed/v1.js";
-    // script.async = true;
-    // document.body.appendChild(script);
+    const script = document.createElement("script");
+    script.src = "https://player.twitch.tv/js/embed/v1.js";
+    script.async = true;
+    document.body.appendChild(script);
 
-    // const loadPlayer = async () => {
-    //   let embed = await new Twitch.Embed("video", options);
-    //   setPlayer(embed);
-    // };
+    const loadPlayer = async () => {
+      let embed = await new Twitch.Embed("video", options);
+      setPlayer(embed);
+    };
 
-    // script.onload = async () => {
-    //   await loadPlayer();
-    // };
+    script.onload = async () => {
+      await loadPlayer();
+    };
   }, []);
 
+  const handleRedirect = () => {
+    router.push("/signup");
+  };
+
   return (
-    <Box>
-      <TopNav />
-      <Container maxWidth="xl" sx={{ marginTop: "2em" }}>
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-          }}
-        >
-          <Box
-            sx={{
-              flexGrow: 1,
-              marginRight: 2,
-              marginTop: 1.2,
-            }}
-          >
-            <TopBarInfo />
-            {/* <CompetitionCountdownTimer /> */}
-            {/* <Box
+    <>
+      {currentUser === null ? (
+        handleRedirect()
+      ) : (
+        <Box>
+          <TopNav />
+          <Container maxWidth="xl" sx={{ marginTop: "2em" }}>
+            <Box
               sx={{
                 display: "flex",
-                height: "88%",
-                // backgroundColor: "black",
-                alignItems: "center",
-                justifyContent: "center",
-                marginTop: 2,
+                justifyContent: "space-between",
               }}
             >
-              <div style={{ flexGrow: 1 }} id="video"></div>
-            </Box> */}
+              <Box
+                sx={{
+                  flexGrow: 1,
+                  marginRight: 2,
+                  marginTop: 1.2,
+                }}
+              >
+                <TopBarInfo />
+                <CompetitionCountdownTimer />
 
-            <ScoreProvider quizId={quizId} currentUser={currentUser}>
-              <Trivia
-                playing={currentQuiz.active}
-                key={questionIndex}
-                questionIndex={questionIndex}
-                quizId={quizId}
-              />
-            </ScoreProvider>
-          </Box>
+                <ScoreProvider quizId={quizId} currentUser={currentUser}>
+                  <Trivia
+                    playing={currentQuiz.active}
+                    key={questionIndex}
+                    questionIndex={questionIndex}
+                    quizId={quizId}
+                  />
+                </ScoreProvider>
+                <Box
+                  sx={
+                    !currentQuiz.active
+                      ? { height: "75%", marginTop: 3 }
+                      : { marginTop: 3 }
+                  }
+                  id="video"
+                ></Box>
+              </Box>
 
-          <Box sx={styles.sidebar}>
-            {currentQuiz.active !== true ? (
-              <Box>
-                <InviteFriendsCard />
-                <ListFriendRequests />
-                <InviteTeamCard />
-                <ListTeamRequests />
+              <Box sx={styles.sidebar}>
+                {currentQuiz.active !== true ? (
+                  <Box>
+                    <InviteFriendsCard />
+                    <ListFriendRequests />
+                    <InviteTeamCard />
+                    <ListTeamRequests />
+                  </Box>
+                ) : (
+                  <Box>
+                    <LeaderboardCard
+                      quizId={quizId}
+                      currentUser={currentUser}
+                    />
+                  </Box>
+                )}
               </Box>
-            ) : (
-              <Box>
-                <LeaderboardCard quizId={quizId} currentUser={currentUser} />
-              </Box>
-            )}
-          </Box>
+            </Box>
+          </Container>
         </Box>
-      </Container>
-    </Box>
+      )}
+    </>
+
+    // )}
   );
-}
+};
+
+export default withAuth(Play);

@@ -2,7 +2,7 @@ import { Box, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import AnswerBoxes from "./AnswerBoxes";
 import { Alarm, Timer } from "@mui/icons-material";
-import { getDocs, collection } from "firebase/firestore";
+import { getDoc, doc } from "firebase/firestore";
 import { database } from "../../firebaseConfig";
 import { useScoring } from "../../context/ScoreContext";
 import { useAuth } from "../../context/AuthContext";
@@ -23,13 +23,16 @@ export default function Trivia({ questionIndex, playing, quizId }) {
   const { currentUser } = useAuth();
 
   const getQuiz = async () => {
-    const quizDocsSnapshot = await getDocs(collection(database, "Quizzes"));
+    const quizDoc = await getDoc(
+      doc(database, "Quizzes", "ZrAuiqFyqJ8XHjkXg08Z")
+    );
 
     if (questionIndex) {
-      quizDocsSnapshot.forEach((doc) => {
-        setChoices(doc.data().questions[questionIndex].options);
-        setQuestion(doc.data().questions[questionIndex].text);
-      });
+      setChoices(quizDoc.data().questions[questionIndex].options);
+      setQuestion(quizDoc.data().questions[questionIndex].text);
+    } else {
+      setChoices(quizDoc.data().questions[0].options);
+      setQuestion(quizDoc.data().questions[0].text);
     }
   };
 
@@ -58,7 +61,7 @@ export default function Trivia({ questionIndex, playing, quizId }) {
 
   return (
     <>
-      {playing === true ? (
+      {playing === true && (
         <Box sx={{ marginTop: 3 }}>
           <Box
             sx={{
@@ -87,8 +90,6 @@ export default function Trivia({ questionIndex, playing, quizId }) {
             </Typography>
           )}
         </Box>
-      ) : (
-        <Typography>Event hasn't started yet</Typography>
       )}
     </>
   );

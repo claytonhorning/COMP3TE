@@ -12,14 +12,24 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
-
 import { useAuth } from "../../context/AuthContext";
+import { useRouter } from "next/router";
 
 const pages = ["Products", "Pricing", "Blog"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 const TopNav = () => {
-  const { currentUser } = useAuth();
+  const { currentUser, logout } = useAuth();
+  const { router } = useRouter();
+
+  async function handleLogout() {
+    try {
+      await logout();
+      router.push("/signup");
+    } catch {
+      console.log("couldnt log out");
+    }
+  }
 
   const [anchorElNav, setAnchorElNav] = useState();
   const [anchorElUser, setAnchorElUser] = useState();
@@ -158,11 +168,9 @@ const TopNav = () => {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
-              ))}
+              <MenuItem onClick={handleLogout}>
+                <Typography textAlign="center">Logout</Typography>
+              </MenuItem>
             </Menu>
           </Box>
         </Toolbar>
