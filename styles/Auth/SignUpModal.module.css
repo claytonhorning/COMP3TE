@@ -23,7 +23,7 @@
   background-color: black;
   height: 55px;
   width: 80%;
-  margin: 3em 2em 2em 2em;
+  margin: 3em 2em 0.5em 2em;
   color: white;
   font-weight: 500;
 }
@@ -56,4 +56,10 @@
   padding-left: 1em;
   padding-right: 1em;
   color: rgb(189, 189, 189);
+}
+.login {
+  margin-bottom: 1em;
+}
+.flare {
+  color: rgb(20, 161, 204);
 }

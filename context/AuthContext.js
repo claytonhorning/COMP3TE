@@ -7,6 +7,7 @@ import {
   FacebookAuthProvider,
   signInWithPopup,
   updateProfile,
+  signInWithEmailAndPassword,
 } from "firebase/auth";
 
 const AuthContext = createContext();
@@ -35,6 +36,10 @@ export function AuthProvider({ children }) {
     return signInWithPopup(auth, facebookAuthProvider);
   }
 
+  function loginWithEmail(email, password) {
+    return signInWithEmailAndPassword(auth, email, password);
+  }
+
   function logout() {
     return auth.signOut();
   }
@@ -47,7 +52,14 @@ export function AuthProvider({ children }) {
     return unsubscribe;
   }, []);
 
-  const value = { currentUser, signup, signupGoogle, signupFacebook, logout };
+  const value = {
+    currentUser,
+    signup,
+    signupGoogle,
+    signupFacebook,
+    logout,
+    loginWithEmail,
+  };
   return (
     <AuthContext.Provider value={value}>
       {!loading && children}

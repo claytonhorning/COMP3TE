@@ -6,6 +6,7 @@ import { database } from "../firebaseConfig";
 import styles from "../styles/Auth/SignUpModal.module.css";
 import { collection, doc, setDoc } from "firebase/firestore";
 import { useAuth } from "../context/AuthContext";
+import Link from "next/link";
 
 export default function Signup() {
   const databaseRef = collection(database, "Users");
@@ -221,6 +222,12 @@ export default function Signup() {
           Submit
         </button>
         <p className={styles.serverError}>{errors.server}</p>
+        <p className={styles.login}>
+          Already have an account?{" "}
+          <span k className={styles.flare}>
+            <Link href="./login">Login</Link>
+          </span>
+        </p>
       </Box>
     </Box>
   );
