@@ -31,6 +31,7 @@ export default function InviteFriendsCard() {
   const { currentUser } = useAuth();
   const { setAlert } = useAlert();
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   let recievingUser = null;
 
@@ -78,6 +79,7 @@ export default function InviteFriendsCard() {
   }, [friend]);
 
   const handleSendFriendRequest = async () => {
+    setIsLoading(true);
     const userSendingRef = doc(database, "Users", currentUser.uid);
     // Add friend to sent array of current user
     await updateDoc(userSendingRef, {
@@ -88,6 +90,8 @@ export default function InviteFriendsCard() {
     const userRecievingRef = doc(database, "Users", recievingUser);
     await updateDoc(userRecievingRef, {
       "friends.recieved": arrayUnion(currentUser.uid),
+    }).then(() => {
+      setIsLoading(false);
     });
   };
 
@@ -153,6 +157,8 @@ export default function InviteFriendsCard() {
           onClick={handleInviteFriend}
           startIcon={<AddCircle />}
           size="medium"
+          loading={isLoading}
+          loadingIndicator="Sending..."
         >
           Add friend
         </Button>
