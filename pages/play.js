@@ -24,6 +24,7 @@ import { useAuth } from "../context/AuthContext";
 import LeaderboardCard from "../components/Cards/Leaderboard";
 import withAuth from "../components/PrivateRoute";
 import { useRouter } from "next/router";
+import Head from "next/head";
 
 const Play = () => {
   const [player, setPlayer] = useState();
@@ -101,6 +102,17 @@ const Play = () => {
 
   return (
     <>
+      <Head>
+        <title>COMP3TE</title>
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+        <meta property="og:title" content="COMP3TE" />
+        <meta property="og:url" content="https://www.comp3te.com/play" />
+        <meta property="og:image" content="/og.png" />
+        <meta
+          property="og:description"
+          content="Win cash by teaming up with your friends in live trivia"
+        />
+      </Head>
       {currentUser === null ? (
         handleRedirect()
       ) : (
