@@ -46,8 +46,8 @@ const Play = () => {
   };
 
   const options = {
-    height: currentQuiz.active ? 267 : "100%",
-    width: currentQuiz.active ? 475 : "100%",
+    height: currentQuiz.active ? 169 : "100%",
+    width: currentQuiz.active ? 300 : "100%",
     channel: "comp3teofficial",
     parent: "localhost",
     allowFullscreen: true,
@@ -143,18 +143,19 @@ const Play = () => {
                     quizId={quizId}
                   />
                 </ScoreProvider>
+
                 <Box
                   sx={
                     !currentQuiz.active
-                      ? { height: "75%", marginTop: 3 }
+                      ? { height: "70%", marginTop: 3 }
                       : { marginTop: 3 }
                   }
                   id="video"
                 ></Box>
               </Box>
 
-              <Box sx={styles.sidebar}>
-                {currentQuiz.active !== true ? (
+              <Box key={currentQuiz} sx={styles.sidebar}>
+                {!currentQuiz.active ? (
                   <Box>
                     <InviteFriendsCard />
                     <ListFriendRequests />

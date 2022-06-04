@@ -42,22 +42,86 @@ export default function Trivia({ questionIndex, playing, quizId }) {
   }, []);
 
   useEffect(() => {
-    if (playing === true) {
-      const intervalId = setInterval(() => {
-        if (seconds > 0) {
-          setActive(true);
-          setSeconds((prevCount) => prevCount - 1);
-        } else {
-          // Add score function
-          handleAddScore(currentUser.uid, selectedAnswerId);
-          setSelectedAnswerId();
-          setActive(false);
-          clearInterval(intervalId);
-        }
-      }, 1000);
-    }
-    return () => clearInterval(intervalId);
+    // if (playing === true) {
+    //   const intervalId = setInterval(() => {
+    //     if (seconds > 0) {
+    //       setActive(true);
+    //       setSeconds((prevCount) => prevCount - 1);
+    //     } else {
+    //       // Add score function
+    //       handleAddScore(currentUser.uid, selectedAnswerId);
+    //       setSelectedAnswerId();
+    //       setActive(false);
+    //       clearInterval(intervalId);
+    //     }
+    //   }, 1000);
+    // }
+    // return () => clearInterval(intervalId);
+    // if (playing === true) {
+    //   var start = Date.now();
+    //   const intervalId = setInterval(function () {
+    //     if (seconds > 0) {
+    //       var delta = Date.now() - start;
+    //       let secondsPassed = Math.floor(delta / 1000);
+    //       setActive(true);
+    //       setSeconds(prevCount);
+    //       // in seconds
+    //       // alternatively just show wall clock time:
+    //     } else {
+    //       handleAddScore(currentUser.uid, selectedAnswerId);
+    //       setSelectedAnswerId();
+    //       setActive(false);
+    //       clearInterval(intervalId);
+    //     }
+    //   }, 1000); // update about every second
+    // }
+    // return () => clearInterval(intervalId);
   }, [seconds]);
+
+  const [basis, setBasis] = useState();
+  const [timer, setTimer] = useState();
+  const [timerDisp, setTimerDisp] = useState();
+  const [intervalId, setIntervalId] = useState();
+
+  useEffect(() => {
+    let _intervalId;
+    if (basis)
+      _intervalId = setInterval(() => {
+        setTimer(new Date().valueOf());
+      }, 100);
+    setIntervalId(_intervalId);
+    return () => {
+      clearInterval(_intervalId);
+    };
+  }, [basis]);
+
+  useEffect(() => {
+    if (basis && timer) {
+      const toDisp = Math.floor((basis - timer) / 1000);
+      if (timerDisp !== toDisp) {
+        setTimerDisp(toDisp);
+      }
+    }
+  }, [timer]);
+
+  useEffect(() => {
+    if (timerDisp <= 0) {
+      handleAddScore(currentUser.uid, selectedAnswerId);
+      setSelectedAnswerId();
+      setActive(false);
+      clearInterval(intervalId);
+    } else {
+      setActive(true);
+    }
+  }, [timerDisp]);
+
+  useEffect(() => {
+    if (playing === true) {
+      let futureDate = new Date();
+      futureDate.setSeconds(futureDate.getSeconds() + 15);
+      setBasis(futureDate.valueOf());
+    }
+  }, []);
 
   return (
     <>
@@ -76,7 +140,7 @@ export default function Trivia({ questionIndex, playing, quizId }) {
             <Box sx={{ display: "flex", alignItems: "center" }}>
               <Alarm sx={{ mr: 1 }} />
               <Typography variant="h5">
-                {seconds > 0 ? "Time: " + seconds + "s" : "0 s"}
+                {timerDisp > 0 ? "Time: " + timerDisp + "s" : "0 s"}
               </Typography>
             </Box>
           </Box>

@@ -16,7 +16,6 @@ export default function CompetitionCountdownTimer() {
 
     // Find the distance between now and the count down date
     let distance = countDownDate - now;
-    console.log(distance);
     setDistance(distance);
 
     // Time calculations for days, hours, minutes and seconds
