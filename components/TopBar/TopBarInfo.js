@@ -47,7 +47,7 @@ export default function TopBarInfo() {
       <Box sx={{ display: "flex" }}>
         <Typography mr={2} variant="h6">
           {" "}
-          <span style={{ fontWeight: 600 }}>Prize:</span> $50
+          <span style={{ fontWeight: 600 }}>Prize:</span> Bragging rights 🏆
         </Typography>
         {team.name !== ("" || undefined) ? (
           <Typography mr={2} variant="h6">
